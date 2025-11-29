@@ -1,5 +1,5 @@
 const catalogContainer = document.getElementById('catalogContainer');
-const categories = ['미역/미역귀/다시마', '김', '황태', '멸치', '건새우', '오징어(반찬)', '오징어(안주)', '노가리', '안주류', '기타'];
+const categories = ['전체', '미역/미역귀/다시마', '김', '황태', '멸치', '건새우', '오징어(반찬)', '오징어(안주)', '노가리', '안주류', '기타'];
 
 window.addEventListener('load', async function() {
     try {
@@ -22,11 +22,14 @@ function displayProducts(products) {
         productsByCategory[cat] = [];
     });
     
+    // 모든 제품을 '전체'에 추가
     products.forEach(product => {
-        if ((product.image || product.name) && product.category) {
-            const category = product.category;
-            if (productsByCategory[category]) {
-                productsByCategory[category].push(product);
+        if (product.image || product.name) {
+            productsByCategory['전체'].push(product);
+            
+            // 카테고리별로도 추가
+            if (product.category && productsByCategory[product.category]) {
+                productsByCategory[product.category].push(product);
             }
         }
     });

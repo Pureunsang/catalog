@@ -14,17 +14,12 @@ for (let i = 1; i <= productCount; i++) {
 let catalogGrid;
 let currentFilter = 'all';
 
-// DOM이 완전히 로드된 후 실행
 document.addEventListener('DOMContentLoaded', function() {
     catalogGrid = document.getElementById('catalogGrid');
     
-    // 데이터 로드
     loadInitialData();
-    
-    // 필터 버튼 설정
     setupFilterButtons();
     
-    // 일괄 업로드
     const bulkUpload = document.getElementById('bulkUpload');
     if (bulkUpload) {
         bulkUpload.addEventListener('change', function(e) {
@@ -43,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 저장 버튼
     const saveBtn = document.getElementById('saveBtn');
     if (saveBtn) {
         saveBtn.addEventListener('click', function() {
@@ -59,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 데이터 불러오기
     const loadData = document.getElementById('loadData');
     if (loadData) {
         loadData.addEventListener('change', function(e) {
@@ -88,6 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 reader.readAsText(file);
             }
+        });
+    }
+    
+    const viewBtn = document.getElementById('viewBtn');
+    if (viewBtn) {
+        viewBtn.addEventListener('click', function() {
+            window.open('view.html', '_blank');
         });
     }
 });
