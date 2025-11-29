@@ -37,6 +37,8 @@ body {
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 15px;
+    position: relative;
+    z-index: 100;
 }
 
 .upload-btn, .save-btn, .view-btn {
@@ -49,6 +51,8 @@ body {
     cursor: pointer;
     transition: background 0.2s;
     border: none;
+    position: relative;
+    z-index: 101;
 }
 
 .upload-btn {
@@ -69,6 +73,9 @@ body {
 
 .view-btn {
     background: #9b59b6;
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 10;
 }
 
 .view-btn:hover {
