@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>푸른상 건어물 카탈로그</title>
+    <link rel="stylesheet" href="view-style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🐟 푸른상 건어물 카탈로그</h1>
+            <p class="subtitle">별도 표기되지 않은 상품은 모두 1만원 기준이에요</p>
+            <p class="subtitle">[문자 주문하기]를 누르면 메시지 화면으로 이동해요</p>
+        </div>
+        <div class="category-tabs">
+            <a href="#category-미역/미역귀/다시마" class="category-tab">미역/미역귀/다시마</a>
+            <a href="#category-김" class="category-tab">김</a>
+            <a href="#category-황태" class="category-tab">황태</a>
+            <a href="#category-멸치" class="category-tab">멸치</a>
+            <a href="#category-건새우" class="category-tab">건새우</a>
+            <a href="#category-오징어(반찬)" class="category-tab">오징어(반찬)</a>
+            <a href="#category-오징어(안주)" class="category-tab">오징어(안주)</a>
+            <a href="#category-노가리" class="category-tab">노가리</a>
+            <a href="#category-안주류" class="category-tab">안주류</a>
+            <a href="#category-기타" class="category-tab">기타</a>
+        </div>
+    </div>
+    
+    <div class="catalog-container" id="catalogContainer"></div>
+    
+    <div class="fixed-order-buttons">
+        <a href="sms:010-2303-3599?body=주문합니다.%0A%0A품목:%0A수량:%0A받는 분:%0A연락처:%0A주소:" class="order-btn sms-btn">
+            📱 문자 주문하기
+        </a>
+        <a href="tel:010-2303-3599" class="order-btn phone-btn">
+            📞 전화 주문하기
+        </a>
+    </div>
+
+    <script src="view-script.js"></script>
+</body>
+</html>

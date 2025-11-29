@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>건어물 카탈로그 관리</title>
+    <link rel="stylesheet" href="index-style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🐟 건어물 카탈로그 관리</h1>
+        <p>최대 200개 제품 등록 가능</p>
+        <div class="upload-section">
+            <label for="bulkUpload" class="upload-btn">
+                📁 이미지 일괄 업로드
+            </label>
+            <input type="file" id="bulkUpload" accept="image/*" multiple style="display: none;">
+            <button class="save-btn" id="saveBtn">💾 데이터 저장</button>
+            <label for="loadData" class="upload-btn" style="background: #e67e22;">
+                📂 데이터 불러오기
+            </label>
+            <input type="file" id="loadData" accept=".json" style="display: none;">
+        </div>
+    </div>
+    
+    <div class="category-filter">
+        <button class="filter-btn active" data-category="all">전체</button>
+        <button class="filter-btn" data-category="미역/미역귀/다시마">미역/미역귀/다시마</button>
+        <button class="filter-btn" data-category="김">김</button>
+        <button class="filter-btn" data-category="황태">황태</button>
+        <button class="filter-btn" data-category="멸치">멸치</button>
+        <button class="filter-btn" data-category="건새우">건새우</button>
+        <button class="filter-btn" data-category="오징어(반찬)">오징어(반찬)</button>
+        <button class="filter-btn" data-category="오징어(안주)">오징어(안주)</button>
+        <button class="filter-btn" data-category="노가리">노가리</button>
+        <button class="filter-btn" data-category="안주류">안주류</button>
+        <button class="filter-btn" data-category="기타">기타</button>
+    </div>
+    
+    <div class="catalog-grid" id="catalogGrid"></div>
+
+    <script src="index-script.js"></script>
+</body>
+</html>
