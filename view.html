@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="view-style.css">
 </head>
 <body>
-    <div class="header">
+    <div class="header" id="header">
         <div class="header-content">
             <h1>🐟 푸른상 건어물 카탈로그</h1>
-            <p class="subtitle">■ 별도 표기되지 않은 상품은 모두 1만원 기준이에요</p>
-            <p class="subtitle">■ [문자 주문하기]를 누르면 메시지 화면으로 이동해요</p>
-            <p class="subtitle">■ [전화 주문하기]를 누르면 바로 전화할 수 있어요</p>
+            <div class="subtitle-wrapper">
+                <p class="subtitle">■ 별도 표기되지 않은 상품은 모두 1만원 기준이에요</p>
+                <p class="subtitle">■ [ 문자 ]를 누르면 메시지 화면으로 이동해요</p>
+                <p class="subtitle">■ [ 전화 ]를 누르면 바로 전화할 수 있어요</p>
+            </div>
         </div>
         <div class="category-tabs">
             <a href="#category-전체" class="category-tab">전체</a>
@@ -32,15 +34,34 @@
     
     <div class="catalog-container" id="catalogContainer"></div>
     
-    <div class="fixed-order-buttons">
-        <a href="sms:010-2303-3599?body=주문합니다.%0A%0A품목:%0A수량:%0A받는 분:%0A연락처:%0A주소:" class="order-btn sms-btn">
-            📱 문자 주문하기
+    <!-- 플로팅 주문 버튼 -->
+    <div class="floating-buttons">
+        <a href="sms:010-2303-3599?body=주문합니다.%0A%0A품목:%0A수량:%0A받는 분:%0A연락처:%0A주소:" class="floating-btn sms-btn">
+            📱 문자
         </a>
-        <a href="tel:010-2303-3599" class="order-btn phone-btn">
-            📞 전화 주문하기
+        <a href="tel:010-2303-3599" class="floating-btn phone-btn">
+            📞 전화
         </a>
     </div>
 
     <script src="view-script.js"></script>
+    
+    <!-- 스크롤 시 헤더 축소 -->
+    <script>
+        let lastScroll = 0;
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+    </script>
 </body>
 </html>
