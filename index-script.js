@@ -199,6 +199,64 @@ function setupCardEvents(card, product) {
     const rotateBtn = card.querySelector(`#rotate-${product.id}`);
     const deleteBtn = card.querySelector(`#delete-${product.id}`);
     
+    // 드래그 앤 드롭 기능 추가
+    card.setAttribute('draggable', 'true');
+    
+    card.addEventListener('dragstart', function(e) {
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', card.innerHTML);
+    });
+    
+    card.addEventListener('dragend', function(e) {
+        card.classList.remove('dragging');
+        
+        // 모든 카드의 drag-over 클래스 제거
+        document.querySelectorAll('.product-card').forEach(c => {
+            c.classList.remove('drag-over');
+        });
+    });
+    
+    card.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        
+        const draggingCard = document.querySelector('.dragging');
+        if (draggingCard && draggingCard !== card) {
+            card.classList.add('drag-over');
+        }
+        return false;
+    });
+    
+    card.addEventListener('dragleave', function(e) {
+        card.classList.remove('drag-over');
+    });
+    
+    card.addEventListener('drop', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        
+        const draggingCard = document.querySelector('.dragging');
+        if (draggingCard && draggingCard !== card) {
+            // 제품 데이터 교환
+            const fromId = parseInt(draggingCard.dataset.productId);
+            const toId = parseInt(card.dataset.productId);
+            
+            const tempProduct = {...products[fromId - 1]};
+            products[fromId - 1] = {...products[toId - 1]};
+            products[toId - 1] = tempProduct;
+            
+            // ID는 유지
+            products[fromId - 1].id = fromId;
+            products[toId - 1].id = toId;
+            
+            renderProducts();
+        }
+        
+        card.classList.remove('drag-over');
+        return false;
+    });
+    
     if (container) {
         container.addEventListener('click', function(e) {
             if (!e.target.closest('.rotate-btn') && !e.target.closest('.delete-image-btn')) {
