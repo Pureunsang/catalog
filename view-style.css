@@ -81,11 +81,15 @@ body {
     white-space: nowrap;
     flex-shrink: 0;
     transition: all 0.2s;
+    cursor: pointer;
+}
+
+.category-tab.active {
+    background: #3498db;
+    color: white;
 }
 
 .category-tab:active {
-    background: #3498db;
-    color: white;
     transform: scale(0.95);
 }
 
@@ -169,7 +173,7 @@ body {
     background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
     color: white;
     padding: 12px 15px;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 600;
     line-height: 1.3;
 }
