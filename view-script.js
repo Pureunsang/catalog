@@ -29,6 +29,9 @@ function setupCategoryTabs() {
             // 활성 탭 표시
             categoryTabs.forEach(t => t.classList.remove('active'));
             this.classList.add('active');
+            
+            // 맨 위로 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
     
