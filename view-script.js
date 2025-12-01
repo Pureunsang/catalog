@@ -42,24 +42,25 @@ function displayProducts(products) {
             section.className = 'category-section';
             section.id = `category-${category}`;
             
-            const title = document.createElement('div');
-            title.className = 'category-title';
-            title.textContent = category;
-            section.appendChild(title);
+            const header = document.createElement('div');
+            header.className = 'category-header';
+            header.textContent = category;
+            section.appendChild(header);
             
             const grid = document.createElement('div');
-            grid.className = 'catalog-grid';
+            grid.className = 'product-grid';
             
             categoryProducts.forEach(product => {
                 const hasImage = product.image && product.image.trim() !== '';
                 const hasName = product.name && product.name.trim() !== '';
+                const rotation = product.rotation || 0;
                 
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
-                    <div class="product-image-container">
+                    <div class="product-image-wrapper">
                         ${hasImage 
-                            ? `<img src="${product.image}" alt="${hasName ? product.name : '제품'}" class="product-image" loading="eager">`
+                            ? `<img src="${product.image}" alt="${hasName ? product.name : '제품'}" class="product-image" style="transform: rotate(${rotation}deg);" loading="lazy">`
                             : `<div class="no-image">이미지 없음</div>`
                         }
                     </div>
@@ -67,6 +68,7 @@ function displayProducts(products) {
                         <div class="product-name">
                             ${hasName ? product.name : '제품명 없음'}
                         </div>
+                        ${product.category ? `<span class="product-category">${product.category}</span>` : ''}
                     </div>
                 `;
                 grid.appendChild(card);
