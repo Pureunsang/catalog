@@ -192,12 +192,12 @@ function createProductCard(product) {
 
 function setupCardEvents(card, product) {
     console.log('이벤트 설정 중:', product.id);
-    const container = document.getElementById(`container-${product.id}`);
-    const fileInput = document.getElementById(`file-${product.id}`);
-    const nameInput = document.getElementById(`name-${product.id}`);
-    const categorySelect = document.getElementById(`category-${product.id}`);
-    const rotateBtn = document.getElementById(`rotate-${product.id}`);
-    const deleteBtn = document.getElementById(`delete-${product.id}`);
+    const container = card.querySelector(`#container-${product.id}`);
+    const fileInput = card.querySelector(`#file-${product.id}`);
+    const nameInput = card.querySelector(`#name-${product.id}`);
+    const categorySelect = card.querySelector(`#category-${product.id}`);
+    const rotateBtn = card.querySelector(`#rotate-${product.id}`);
+    const deleteBtn = card.querySelector(`#delete-${product.id}`);
     
     if (container) {
         container.addEventListener('click', function(e) {
@@ -213,9 +213,9 @@ function setupCardEvents(card, product) {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    const img = document.getElementById(`img-${product.id}`);
-                    const btn = document.getElementById(`btn-${product.id}`);
-                    const controls = document.getElementById(`controls-${product.id}`);
+                    const img = card.querySelector(`#img-${product.id}`);
+                    const btn = card.querySelector(`#btn-${product.id}`);
+                    const controls = card.querySelector(`#controls-${product.id}`);
                     img.src = event.target.result;
                     img.style.display = 'block';
                     btn.style.display = 'none';
@@ -232,7 +232,7 @@ function setupCardEvents(card, product) {
     if (rotateBtn) {
         rotateBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            const img = document.getElementById(`img-${product.id}`);
+            const img = card.querySelector(`#img-${product.id}`);
             const currentRotation = products[product.id - 1].rotation || 0;
             const newRotation = (currentRotation + 90) % 360;
             products[product.id - 1].rotation = newRotation;
@@ -243,9 +243,9 @@ function setupCardEvents(card, product) {
     if (deleteBtn) {
         deleteBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            const img = document.getElementById(`img-${product.id}`);
-            const btn = document.getElementById(`btn-${product.id}`);
-            const controls = document.getElementById(`controls-${product.id}`);
+            const img = card.querySelector(`#img-${product.id}`);
+            const btn = card.querySelector(`#btn-${product.id}`);
+            const controls = card.querySelector(`#controls-${product.id}`);
             img.src = '';
             img.style.display = 'none';
             btn.style.display = 'block';
