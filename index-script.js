@@ -1,6 +1,66 @@
 const productCount = 200;
 const products = [];
 
+// 이미지 압축 함수
+function compressImage(file, maxSizeKB = 200) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                // 최대 크기 제한 (긴 쪽을 1920px로)
+                const maxDimension = 1920;
+                if (width > maxDimension || height > maxDimension) {
+                    if (width > height) {
+                        height = (height / width) * maxDimension;
+                        width = maxDimension;
+                    } else {
+                        width = (width / height) * maxDimension;
+                        height = maxDimension;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // 압축 품질 조정
+                let quality = 0.9;
+                const targetSize = maxSizeKB * 1024; // KB를 바이트로 변환
+                
+                function tryCompress(q) {
+                    canvas.toBlob(function(blob) {
+                        if (blob.size <= targetSize || q <= 0.1) {
+                            // 목표 크기 달성 또는 최소 품질
+                            const compressedReader = new FileReader();
+                            compressedReader.onload = function(event) {
+                                console.log(`원본: ${(file.size / 1024).toFixed(0)}KB → 압축: ${(blob.size / 1024).toFixed(0)}KB`);
+                                resolve(event.target.result);
+                            };
+                            compressedReader.readAsDataURL(blob);
+                        } else {
+                            // 더 압축 필요
+                            tryCompress(q - 0.1);
+                        }
+                    }, 'image/jpeg', q);
+                }
+                
+                tryCompress(quality);
+            };
+            img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+
 for (let i = 1; i <= productCount; i++) {
     products.push({ 
         id: i, 
@@ -22,19 +82,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const bulkUpload = document.getElementById('bulkUpload');
     if (bulkUpload) {
-        bulkUpload.addEventListener('change', function(e) {
+        bulkUpload.addEventListener('change', async function(e) {
             const files = Array.from(e.target.files);
-            files.forEach((file, index) => {
-                if (index < products.length) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        products[index].image = event.target.result;
-                        products[index].rotation = 0;
-                        renderProducts();
-                    };
-                    reader.readAsDataURL(file);
+            
+            for (let index = 0; index < files.length && index < products.length; index++) {
+                try {
+                    const compressedDataUrl = await compressImage(files[index], 200);
+                    products[index].image = compressedDataUrl;
+                    products[index].rotation = 0;
+                } catch (error) {
+                    console.error(`이미지 ${index + 1} 압축 실패:`, error);
                 }
-            });
+            }
+            
+            renderProducts();
+            alert(`${Math.min(files.length, products.length)}개 이미지 압축 완료!`);
         });
     }
     
@@ -266,23 +328,27 @@ function setupCardEvents(card, product) {
     }
     
     if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
+        fileInput.addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
+                try {
+                    // 이미지 압축
+                    const compressedDataUrl = await compressImage(file, 200);
+                    
                     const img = card.querySelector(`#img-${product.id}`);
                     const btn = card.querySelector(`#btn-${product.id}`);
                     const controls = card.querySelector(`#controls-${product.id}`);
-                    img.src = event.target.result;
+                    img.src = compressedDataUrl;
                     img.style.display = 'block';
                     btn.style.display = 'none';
                     controls.style.display = 'flex';
-                    products[product.id - 1].image = event.target.result;
+                    products[product.id - 1].image = compressedDataUrl;
                     products[product.id - 1].rotation = 0;
                     img.style.transform = 'rotate(0deg)';
-                };
-                reader.readAsDataURL(file);
+                } catch (error) {
+                    console.error('이미지 압축 실패:', error);
+                    alert('이미지 처리 중 오류가 발생했습니다.');
+                }
             }
         });
     }
