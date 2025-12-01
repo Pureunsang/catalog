@@ -27,11 +27,15 @@ function setupCategoryTabs() {
             displayCategory(category);
             
             // 활성 탭 표시
-            categoryTabs.forEach(t => t.style.background = '#ecf0f1');
-            this.style.background = '#3498db';
-            this.style.color = 'white';
+            categoryTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
         });
     });
+    
+    // 첫 로드 시 '전체' 활성화
+    if (categoryTabs.length > 0) {
+        categoryTabs[0].classList.add('active');
+    }
 }
 
 function displayCategory(category) {
