@@ -141,6 +141,8 @@ function renderProducts() {
         const card = createProductCard(product);
         catalogGrid.appendChild(card);
     });
+    
+    console.log('제품 렌더링 완료:', filteredProducts.length, '개');
 }
 
 function createProductCard(product) {
@@ -189,6 +191,7 @@ function createProductCard(product) {
 }
 
 function setupCardEvents(card, product) {
+    console.log('이벤트 설정 중:', product.id);
     const container = document.getElementById(`container-${product.id}`);
     const fileInput = document.getElementById(`file-${product.id}`);
     const nameInput = document.getElementById(`name-${product.id}`);
