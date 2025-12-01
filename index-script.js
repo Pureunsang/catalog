@@ -198,12 +198,10 @@ function setupCardEvents(card, product) {
     
     if (container) {
         container.addEventListener('click', function(e) {
-            e.stopPropagation();
             if (!e.target.closest('.rotate-btn') && !e.target.closest('.delete-image-btn')) {
-                console.log('Container clicked!'); // 디버깅용
                 fileInput.click();
             }
-        }, true);
+        });
     }
     
     if (fileInput) {
