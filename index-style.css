@@ -163,6 +163,7 @@ body {
     background: #ecf0f1;
     cursor: pointer;
     overflow: hidden;
+    z-index: 1;
 }
 
 .product-image {
