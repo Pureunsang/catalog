@@ -9,6 +9,7 @@ window.addEventListener('load', async function() {
         if (response.ok) {
             allProducts = await response.json();
             setupCategoryTabs();
+            setupImageModal();
             displayCategory('전체');
         } else {
             showError();
@@ -17,6 +18,22 @@ window.addEventListener('load', async function() {
         showError();
     }
 });
+
+function setupImageModal() {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalClose = document.getElementById('modalClose');
+    
+    modalClose.addEventListener('click', function() {
+        modal.classList.remove('active');
+    });
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+}
 
 function setupCategoryTabs() {
     const categoryTabs = document.querySelectorAll('.category-tab');
@@ -92,12 +109,25 @@ function displayCategory(category) {
             card.innerHTML = `
                 <div class="product-image-wrapper">
                     ${hasImage 
-                        ? `<img src="${product.image}" alt="${hasName ? product.name : '제품'}" class="product-image" style="transform: rotate(${rotation}deg);" loading="lazy">`
+                        ? `<img src="${product.image}" alt="${hasName ? product.name : '제품'}" class="product-image" style="transform: rotate(${rotation}deg); cursor: pointer;" loading="lazy" data-fullsize="${product.image}">`
                         : `<div class="no-image">이미지 없음</div>`
                     }
                     ${hasName ? `<div class="product-name-overlay">${product.name}</div>` : ''}
                 </div>
             `;
+            
+            // 이미지 클릭 이벤트
+            if (hasImage) {
+                const img = card.querySelector('.product-image');
+                img.addEventListener('click', function() {
+                    const modal = document.getElementById('imageModal');
+                    const modalImage = document.getElementById('modalImage');
+                    modalImage.src = this.dataset.fullsize;
+                    modalImage.style.transform = `rotate(${rotation}deg)`;
+                    modal.classList.add('active');
+                });
+            }
+            
             grid.appendChild(card);
         });
         
