@@ -37,11 +37,17 @@
     <!-- 플로팅 주문 버튼 -->
     <div class="floating-buttons">
         <a href="sms:010-2303-3599?body=주문합니다.%0A%0A품목:%0A수량:%0A받는 분:%0A연락처:%0A주소:" class="floating-btn sms-btn">
-            📱 문자
+            💬 문자
         </a>
         <a href="tel:010-2303-3599" class="floating-btn phone-btn">
             📞 전화
         </a>
+    </div>
+
+    <!-- 이미지 확대 모달 -->
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-close" id="modalClose">✕</div>
+        <img id="modalImage" src="" alt="확대 이미지">
     </div>
 
     <script src="view-script.js"></script>
