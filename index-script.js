@@ -85,18 +85,29 @@ document.addEventListener('DOMContentLoaded', function() {
         bulkUpload.addEventListener('change', async function(e) {
             const files = Array.from(e.target.files);
             
-            for (let index = 0; index < files.length && index < products.length; index++) {
+            // 비어있는 첫 번째 제품 찾기
+            let startIndex = 0;
+            for (let i = 0; i < products.length; i++) {
+                if (!products[i].image || products[i].image.trim() === '') {
+                    startIndex = i;
+                    break;
+                }
+            }
+            
+            let uploadCount = 0;
+            for (let i = 0; i < files.length && (startIndex + i) < products.length; i++) {
                 try {
-                    const compressedDataUrl = await compressImage(files[index], 200);
-                    products[index].image = compressedDataUrl;
-                    products[index].rotation = 0;
+                    const compressedDataUrl = await compressImage(files[i], 200);
+                    products[startIndex + i].image = compressedDataUrl;
+                    products[startIndex + i].rotation = 0;
+                    uploadCount++;
                 } catch (error) {
-                    console.error(`이미지 ${index + 1} 압축 실패:`, error);
+                    console.error(`이미지 ${i + 1} 압축 실패:`, error);
                 }
             }
             
             renderProducts();
-            alert(`${Math.min(files.length, products.length)}개 이미지 압축 완료!`);
+            alert(`${uploadCount}개 이미지가 제품 ${startIndex + 1}번부터 추가되었습니다!`);
         });
     }
     
@@ -367,17 +378,30 @@ function setupCardEvents(card, product) {
     if (deleteBtn) {
         deleteBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            const img = card.querySelector(`#img-${product.id}`);
-            const btn = card.querySelector(`#btn-${product.id}`);
-            const controls = card.querySelector(`#controls-${product.id}`);
-            img.src = '';
-            img.style.display = 'none';
-            btn.style.display = 'block';
-            controls.style.display = 'none';
-            fileInput.value = '';
-            products[product.id - 1].image = '';
-            products[product.id - 1].rotation = 0;
-            img.style.transform = 'rotate(0deg)';
+            
+            const deleteIndex = product.id - 1;
+            
+            // 해당 제품부터 끝까지 한 칸씩 당기기
+            for (let i = deleteIndex; i < products.length - 1; i++) {
+                products[i] = {
+                    id: i + 1,
+                    name: products[i + 1].name,
+                    image: products[i + 1].image,
+                    category: products[i + 1].category,
+                    rotation: products[i + 1].rotation
+                };
+            }
+            
+            // 맨 마지막 제품은 비우기
+            products[products.length - 1] = {
+                id: products.length,
+                name: '',
+                image: '',
+                category: '',
+                rotation: 0
+            };
+            
+            renderProducts();
         });
     }
     
