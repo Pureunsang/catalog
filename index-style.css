@@ -114,11 +114,10 @@ body {
 .catalog-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 15px 10px;
+    gap: 8px;
+    padding: 10px 8px;
     max-width: 100%;
     margin: 0 auto;
-}
 }
 
 .product-card {
@@ -312,7 +311,7 @@ body {
 @media (max-width: 767px) {
     .catalog-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 8px;
     }
     
     .product-card {
