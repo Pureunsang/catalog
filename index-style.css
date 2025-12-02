@@ -7,15 +7,12 @@
 body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #f5f5f5;
-    padding: 20px 10px;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 20px;
     background: white;
     padding: 20px;
-    border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -35,8 +32,9 @@ body {
     display: flex;
     gap: 8px;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     margin-top: 15px;
+    overflow-x: auto;
 }
 
 .upload-btn, .save-btn, .view-btn {
@@ -49,6 +47,8 @@ body {
     cursor: pointer;
     transition: background 0.2s;
     border: none;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .upload-btn {
@@ -77,26 +77,29 @@ body {
 
 .category-filter {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 25px;
-    background: white;
+    gap: 8px;
     padding: 15px;
-    border-radius: 10px;
+    background: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .filter-btn {
-    padding: 8px 14px;
+    padding: 8px 16px;
     background: #ecf0f1;
-    border: 2px solid #95a5a6;
+    border: none;
     border-radius: 20px;
-    color: #2c3e50;
-    font-size: 13px;
-    font-weight: bold;
+    color: #34495e;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .filter-btn:hover {
@@ -105,16 +108,17 @@ body {
 
 .filter-btn.active {
     background: #3498db;
-    border-color: #3498db;
     color: white;
 }
 
 .catalog-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-    max-width: 600px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 15px 10px;
+    max-width: 100%;
     margin: 0 auto;
+}
 }
 
 .product-card {
