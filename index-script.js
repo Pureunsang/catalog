@@ -232,6 +232,39 @@ document.addEventListener('DOMContentLoaded', function() {
         saveBtn.addEventListener('click', saveToFirebase);
     }
     
+    // JSON 데이터 불러오기
+    const loadData = document.getElementById('loadData');
+    if (loadData) {
+        loadData.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const loadedProducts = JSON.parse(event.target.result);
+                        loadedProducts.forEach((product, index) => {
+                            if (index < products.length && product) {
+                                products[index] = {
+                                    id: index + 1,
+                                    name: product.name || '',
+                                    image: product.image || '',
+                                    category: product.category || '',
+                                    rotation: product.rotation || 0
+                                };
+                            }
+                        });
+                        renderProducts();
+                        alert('데이터를 불러왔습니다! 이제 Firebase 저장 버튼을 눌러주세요.');
+                    } catch (error) {
+                        console.error('JSON 파싱 에러:', error);
+                        alert('파일 형식이 올바르지 않습니다.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+    }
+    
     // 카탈로그 보기
     const viewBtn = document.getElementById('viewBtn');
     if (viewBtn) {
