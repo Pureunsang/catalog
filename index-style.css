@@ -119,6 +119,7 @@ body {
     max-width: 100%;
     margin: 0 auto;
 }
+}
 
 .product-card {
     background: white;
@@ -311,7 +312,7 @@ body {
 @media (max-width: 767px) {
     .catalog-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        gap: 10px;
     }
     
     .product-card {

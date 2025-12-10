@@ -16,11 +16,7 @@
                 📁 이미지 일괄 업로드
             </label>
             <input type="file" id="bulkUpload" accept="image/*" multiple style="display: none;">
-            <button class="save-btn" id="saveBtn">💾 데이터 저장</button>
-            <label for="loadData" class="upload-btn" style="background: #e67e22;">
-                📂 데이터 불러오기
-            </label>
-            <input type="file" id="loadData" accept=".json" style="display: none;">
+            <button class="save-btn" id="saveBtn">💾 Firebase 저장</button>
             <button class="view-btn" id="viewBtn">📋 카탈로그 확인</button>
         </div>
     </div>
@@ -41,6 +37,34 @@
     
     <div class="catalog-grid" id="catalogGrid"></div>
 
-    <script src="index-script.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyCI2_v2XZiV2HFi24wOnDyXM6qz1FfmMXM",
+            authDomain: "pureunsang-71ffb.firebaseapp.com",
+            databaseURL: "https://pureunsang-71ffb-default-rtdb.firebaseio.com",
+            projectId: "pureunsang-71ffb",
+            storageBucket: "pureunsang-71ffb.firebasestorage.app",
+            messagingSenderId: "101820382494",
+            appId: "1:101820382494:web:893590f3a24aeeb46add0f",
+            measurementId: "G-KQYJY4Z9J9"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+
+        // 전역으로 export
+        window.firebaseDB = database;
+        window.firebaseStorage = storage;
+        window.firebaseRefs = { ref, set, get, storageRef, uploadBytes, getDownloadURL };
+    </script>
+    <script src="index-script-firebase.js"></script>
 </body>
 </html>

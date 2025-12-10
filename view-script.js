@@ -3,20 +3,47 @@ const categories = ['전체', '미역/미역귀/다시마', '김', '황태', '�
 let allProducts = [];
 let currentCategory = '전체';
 
-window.addEventListener('load', async function() {
-    try {
-        const response = await fetch('catalog_data.json');
-        if (response.ok) {
-            allProducts = await response.json();
+// Firebase에서 실시간 데이터 로드
+function loadFromFirebase() {
+    const { ref, onValue } = window.firebaseRefs;
+    const database = window.firebaseDB;
+    
+    const productsRef = ref(database, 'products');
+    onValue(productsRef, (snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            allProducts = [];
+            
+            Object.keys(data).forEach(key => {
+                allProducts.push({
+                    id: parseInt(key) + 1,
+                    name: data[key].name || '',
+                    image: data[key].imageUrl || '',
+                    category: data[key].category || '',
+                    rotation: data[key].rotation || 0
+                });
+            });
+            
             setupCategoryTabs();
             setupImageModal();
             displayCategory('전체');
         } else {
             showError();
         }
-    } catch (error) {
+    }, (error) => {
+        console.error('Firebase 로드 에러:', error);
         showError();
-    }
+    });
+}
+
+window.addEventListener('load', function() {
+    // Firebase SDK 로드 대기
+    const checkFirebase = setInterval(() => {
+        if (window.firebaseDB && window.firebaseRefs) {
+            clearInterval(checkFirebase);
+            loadFromFirebase();
+        }
+    }, 100);
 });
 
 function setupImageModal() {
@@ -57,6 +84,16 @@ function setupCategoryTabs() {
         categoryTabs[0].classList.add('active');
     }
 }
+
+// 스크롤 시 헤더 축소
+window.addEventListener('scroll', function() {
+    const header = document.getElementById('header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
 
 function displayCategory(category) {
     currentCategory = category;
@@ -146,7 +183,7 @@ function showError() {
     catalogContainer.innerHTML = `
         <div style="text-align: center; padding: 50px;">
             <h2 style="color: #7f8c8d;">데이터를 불러올 수 없습니다</h2>
-            <p style="color: #95a5a6; margin-top: 10px;">catalog_data.json 파일을 확인해주세요</p>
+            <p style="color: #95a5a6; margin-top: 10px;">Firebase에서 데이터를 확인해주세요</p>
         </div>
     `;
 }

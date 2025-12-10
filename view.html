@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>푸른상 건어물 카탈로그</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐟</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="view-style.css">
 </head>
 <body>
@@ -14,11 +15,11 @@
             <div class="subtitle-wrapper">
                 <p class="subtitle">■ 별도 표기되지 않은 상품은 모두 1만원 기준이에요</p>
                 <p class="subtitle">■ [ 문자 ]를 누르면 메시지 화면으로 이동해요</p>
-                <p class="subtitle">■ [ 전화 ]를 누르면 바로 전화할 수 있어요</p>
+                <p class="subtitle">■ 전화는 바로 연결됩니다</p>
             </div>
         </div>
         <div class="category-tabs">
-            <a href="#category-전체" class="category-tab">전체</a>
+            <a href="#category-전체" class="category-tab active">전체</a>
             <a href="#category-미역/미역귀/다시마" class="category-tab">미역/미역귀/다시마</a>
             <a href="#category-김" class="category-tab">김</a>
             <a href="#category-황태" class="category-tab">황태</a>
@@ -31,43 +32,48 @@
             <a href="#category-기타" class="category-tab">기타</a>
         </div>
     </div>
-    
-    <div class="catalog-container" id="catalogContainer"></div>
-    
-    <!-- 플로팅 주문 버튼 -->
-    <div class="floating-buttons">
-        <a href="sms:010-2303-3599?body=주문합니다.%0A%0A품목:%0A수량:%0A받는 분:%0A연락처:%0A주소:" class="floating-btn sms-btn">
-            💬 문자
-        </a>
-        <a href="tel:010-2303-3599" class="floating-btn phone-btn">
-            📞 전화
-        </a>
+
+    <div class="catalog-container" id="catalogContainer">
+        <div style="text-align: center; padding: 50px;">
+            <p style="color: #95a5a6;">데이터를 불러오는 중...</p>
+        </div>
     </div>
 
-    <!-- 이미지 확대 모달 -->
+    <div class="floating-buttons">
+        <a href="sms:01036620889" class="floating-btn sms-btn">💬 문자</a>
+        <a href="tel:01036620889" class="floating-btn phone-btn">📞 전화</a>
+    </div>
+
     <div class="image-modal" id="imageModal">
         <div class="image-modal-close" id="modalClose">✕</div>
         <img id="modalImage" src="" alt="확대 이미지">
     </div>
 
-    <script src="view-script.js"></script>
-    
-    <!-- 스크롤 시 헤더 축소 -->
-    <script>
-        let lastScroll = 0;
-        const header = document.getElementById('header');
-        
-        window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            lastScroll = currentScroll;
-        });
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyCI2_v2XZiV2HFi24wOnDyXM6qz1FfmMXM",
+            authDomain: "pureunsang-71ffb.firebaseapp.com",
+            databaseURL: "https://pureunsang-71ffb-default-rtdb.firebaseio.com",
+            projectId: "pureunsang-71ffb",
+            storageBucket: "pureunsang-71ffb.firebasestorage.app",
+            messagingSenderId: "101820382494",
+            appId: "1:101820382494:web:893590f3a24aeeb46add0f",
+            measurementId: "G-KQYJY4Z9J9"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // 전역으로 export
+        window.firebaseDB = database;
+        window.firebaseRefs = { ref, onValue };
     </script>
+    <script src="view-script-firebase.js"></script>
 </body>
 </html>
